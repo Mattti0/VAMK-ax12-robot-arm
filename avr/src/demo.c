@@ -44,7 +44,7 @@ int main(void)
 {
   eMBErrorCode eStatus;
 
-  eStatus = eMBInit(MB_RTU, 0x0A, 0, BAUD_MODBUS, MB_PAR_EVEN);
+  eStatus = eMBInit(MB_RTU, 0x0A, 0, BAUD_MODBUS, MB_PAR_EVEN); /* Port 0 is defined in portserial.c */
 
   sei( );
 
@@ -60,8 +60,7 @@ int main(void)
   }
 }
 
-eMBErrorCode eMBRegInputCB(UCHAR * pucRegBuffer, USHORT usAddress,
-    USHORT usNRegs)
+eMBErrorCode eMBRegInputCB(UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs)
 {
   eMBErrorCode eStatus = MB_ENOERR;
   int iRegIndex;
@@ -86,16 +85,14 @@ eMBErrorCode eMBRegInputCB(UCHAR * pucRegBuffer, USHORT usAddress,
   return eStatus;
 }
 
-eMBErrorCode eMBRegHoldingCB(UCHAR * pucRegBuffer, USHORT usAddress,
-    USHORT usNRegs, eMBRegisterMode eMode)
+eMBErrorCode eMBRegHoldingCB(UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNRegs, eMBRegisterMode eMode)
 {
   eMBErrorCode  eStatus     = MB_ENOERR;
   short         inRegister  = (short) usNRegs;
   int           iRegIndex;
   USHORT        temp;
 
-  if ((usAddress >= REG_HOLDING_START)
-      && (usAddress + usNRegs <= REG_HOLDING_START + REG_HOLDING_NREGS))
+  if ((usAddress >= REG_HOLDING_START) && (usAddress + usNRegs <= REG_HOLDING_START + REG_HOLDING_NREGS))
   {
     iRegIndex = (int) (usAddress - usRegHoldStart);
     switch (eMode)
@@ -111,7 +108,7 @@ eMBErrorCode eMBRegHoldingCB(UCHAR * pucRegBuffer, USHORT usAddress,
         }
         break;
 
-        /* Update current register values. */
+      /* Update current register values. */
       case MB_REG_WRITE:
         while (inRegister > 0)
         {
@@ -137,8 +134,7 @@ eMBErrorCode eMBRegHoldingCB(UCHAR * pucRegBuffer, USHORT usAddress,
   return eStatus;
 }
 
-eMBErrorCode eMBRegCoilsCB(UCHAR * pucRegBuffer, USHORT usAddress,
-    USHORT usNCoils, eMBRegisterMode eMode)
+eMBErrorCode eMBRegCoilsCB(UCHAR * pucRegBuffer, USHORT usAddress, USHORT usNCoils, eMBRegisterMode eMode)
 {
   return MB_ENOREG;
 }
