@@ -22,6 +22,7 @@
 /* ----------------------- AVR includes -------------------------------------*/
 #include "avr/io.h"
 #include "avr/interrupt.h"
+#include "USART_driver.h"
 
 /* ----------------------- Modbus includes ----------------------------------*/
 #include "mb.h"
@@ -42,7 +43,7 @@ main( void )
     const UCHAR     ucSlaveID[] = { 0xAA, 0xBB, 0xCC };
     eMBErrorCode    eStatus;
 
-    eStatus = eMBInit( MB_RTU, 0x0A, 0, 38400, MB_PAR_EVEN );
+    eStatus = eMBInit( MB_RTU, 0x0A, 0, BAUD_MODBUS , MB_PAR_EVEN );
 
     //eStatus = eMBSetSlaveID( 0x34, TRUE, ucSlaveID, 3 );
     sei(  );

@@ -12,7 +12,7 @@
 
 #define XTAL 8000000 // MCU:n kellotaajuus
 #define BAUD_SERVO  250000 // sarjaportin nopeus servolle
-#define BAUD_MODBUS 19200 // sarjaportin nopeus modbussille
+#define BAUD_MODBUS 38400 // sarjaportin nopeus modbussille
 
 #define USART_MODBUS  1
 #define USART_SERVO   0
