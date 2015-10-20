@@ -34,7 +34,7 @@
 
 /* ----------------------- Static variables ---------------------------------*/
 static USHORT usRegInputStart = REG_INPUT_START;
-static USHORT usRegInputBuf[REG_INPUT_NREGS];
+static USHORT usRegInputBuf[REG_INPUT_NREGS] = {0xAAAA,0xBBBB,0xCCCC,0xDDDD};
 
 /* ----------------------- Start implementation -----------------------------*/
 int main(void)
@@ -54,7 +54,9 @@ int main(void)
   if (eStatus == MB_ENOERR)
   {
     while (1)
-      ;
+    {
+      ( void )eMBPoll(  );
+    }
   }
   
 }
