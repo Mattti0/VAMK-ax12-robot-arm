@@ -75,84 +75,83 @@
 
 #define MB_TCP_PROTOCOL_ID  0   /* 0 = Modbus Protocol */
 
-
 /* ----------------------- Start implementation -----------------------------*/
 eMBErrorCode
 eMBTCPDoInit( USHORT ucTCPPort )
-{
-    eMBErrorCode    eStatus = MB_ENOERR;
+{ 
+  eMBErrorCode eStatus = MB_ENOERR;
 
-    if( xMBTCPPortInit( ucTCPPort ) == FALSE )
-    {
-        eStatus = MB_EPORTERR;
-    }
-    return eStatus;
+  if( xMBTCPPortInit( ucTCPPort ) == FALSE )
+  { 
+    eStatus = MB_EPORTERR;
+  }
+  return eStatus;
 }
 
 void
 eMBTCPStart( void )
-{
+{ 
 }
 
 void
 eMBTCPStop( void )
-{
-    /* Make sure that no more clients are connected. */
-    vMBTCPPortDisable( );
+{ 
+  /* Make sure that no more clients are connected. */
+  vMBTCPPortDisable( );
 }
 
 eMBErrorCode
 eMBTCPReceive( UCHAR * pucRcvAddress, UCHAR ** ppucFrame, USHORT * pusLength )
-{
-    eMBErrorCode    eStatus = MB_EIO;
-    UCHAR          *pucMBTCPFrame;
-    USHORT          usLength;
-    USHORT          usPID;
+{ 
+  eMBErrorCode eStatus = MB_EIO;
+  UCHAR *pucMBTCPFrame;
+  USHORT usLength;
+  USHORT usPID;
 
-    if( xMBTCPPortGetRequest( &pucMBTCPFrame, &usLength ) != FALSE )
-    {
-        usPID = pucMBTCPFrame[MB_TCP_PID] << 8U;
-        usPID |= pucMBTCPFrame[MB_TCP_PID + 1];
+  if( xMBTCPPortGetRequest( &pucMBTCPFrame, &usLength ) != FALSE )
+  { 
+    usPID = pucMBTCPFrame[MB_TCP_PID] << 8U;
+    usPID |= pucMBTCPFrame[MB_TCP_PID + 1];
 
-        if( usPID == MB_TCP_PROTOCOL_ID )
-        {
-            *ppucFrame = &pucMBTCPFrame[MB_TCP_FUNC];
-            *pusLength = usLength - MB_TCP_FUNC;
-            eStatus = MB_ENOERR;
+    if( usPID == MB_TCP_PROTOCOL_ID )
+    { 
+      *ppucFrame = &pucMBTCPFrame[MB_TCP_FUNC];
+      *pusLength = usLength - MB_TCP_FUNC;
+      eStatus = MB_ENOERR;
 
-            /* Modbus TCP does not use any addresses. Fake the source address such
-             * that the processing part deals with this frame.
-             */
-            *pucRcvAddress = MB_TCP_PSEUDO_ADDRESS;
-        }
+      /* Modbus TCP does not use any addresses. Fake the source address such
+       * that the processing part deals with this frame.
+       */
+      *pucRcvAddress = MB_TCP_PSEUDO_ADDRESS;
     }
-    else
-    {
-        eStatus = MB_EIO;
-    }
-    return eStatus;
+  }
+  else
+  { 
+    eStatus = MB_EIO;
+  }
+  return eStatus;
 }
 
 eMBErrorCode
 eMBTCPSend( UCHAR _unused, const UCHAR * pucFrame, USHORT usLength )
-{
-    eMBErrorCode    eStatus = MB_ENOERR;
-    UCHAR          *pucMBTCPFrame = ( UCHAR * ) pucFrame - MB_TCP_FUNC;
-    USHORT          usTCPLength = usLength + MB_TCP_FUNC;
+{ 
+  eMBErrorCode eStatus = MB_ENOERR;
+  UCHAR *pucMBTCPFrame = ( UCHAR * ) pucFrame - MB_TCP_FUNC;
+  USHORT usTCPLength = usLength + MB_TCP_FUNC;
 
-    /* The MBAP header is already initialized because the caller calls this
-     * function with the buffer returned by the previous call. Therefore we 
-     * only have to update the length in the header. Note that the length 
-     * header includes the size of the Modbus PDU and the UID Byte. Therefore 
-     * the length is usLength plus one.
-     */
-    pucMBTCPFrame[MB_TCP_LEN] = ( usLength + 1 ) >> 8U;
-    pucMBTCPFrame[MB_TCP_LEN + 1] = ( usLength + 1 ) & 0xFF;
-    if( xMBTCPPortSendResponse( pucMBTCPFrame, usTCPLength ) == FALSE )
-    {
-        eStatus = MB_EIO;
-    }
-    return eStatus;
+  /* The MBAP header is already initialized because the caller calls this
+   * function with the buffer returned by the previous call. Therefore we 
+   * only have to update the length in the header. Note that the length 
+   * header includes the size of the Modbus PDU and the UID Byte. Therefore 
+   * the length is usLength plus one.
+   */
+  pucMBTCPFrame[MB_TCP_LEN] = ( usLength + 1 ) >> 8U;
+  pucMBTCPFrame[MB_TCP_LEN + 1] = ( usLength + 1 ) & 0xFF;
+  if( xMBTCPPortSendResponse( pucMBTCPFrame, usTCPLength ) == FALSE )
+  { 
+    eStatus = MB_EIO;
+  }
+  return eStatus;
 }
 
 #endif

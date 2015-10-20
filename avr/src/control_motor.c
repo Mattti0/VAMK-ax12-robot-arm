@@ -67,10 +67,10 @@
 int main(void)
 {
   USART_Init();
-
+  
   PORTE = 0xFF;
   
-  for(int i = 0; i < 0x500; i++)
+  for (int i = 0; i < 0x500; i++)
   {
     
   }

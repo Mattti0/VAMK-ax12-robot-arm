@@ -33,7 +33,7 @@
 #include "mb.h"
 #include "mbport.h"
 
-BOOL xMBPortSerialInit( UCHAR ucPORT, ULONG ulBaudRate, UCHAR ucDataBits, eMBParity eParity )
+BOOL xMBPortSerialInit(UCHAR ucPORT, ULONG ulBaudRate, UCHAR ucDataBits, eMBParity eParity)
 {
   UBRR1H = 0x00;
   UBRR1L = ((XTAL / 16) / BAUD_MODBUS) - 1;
@@ -41,34 +41,32 @@ BOOL xMBPortSerialInit( UCHAR ucPORT, ULONG ulBaudRate, UCHAR ucDataBits, eMBPar
   UCSR1C |= (1 << UCSZ11) | (1 << UCSZ10);
 }
 
-BOOL
-xMBPortSerialPutByte( CHAR ucByte )
+BOOL xMBPortSerialPutByte(CHAR ucByte)
 {
-    UDR1 = ucByte; /* Modbus usart is 1 */
-    return TRUE;
+  UDR1 = ucByte; /* Modbus usart is 1 */
+  return TRUE;
 }
 
-BOOL
-xMBPortSerialGetByte( CHAR * pucByte )
+BOOL xMBPortSerialGetByte(CHAR * pucByte)
 {
-    *pucByte = UDR1;
-    return TRUE;
+  *pucByte = UDR1;
+  return TRUE;
 }
 
-SIGNAL( SIG_USART_DATA )
+SIGNAL( SIG_USART_DATA)
 {
-    pxMBFrameCBTransmitterEmpty(  );
+  pxMBFrameCBTransmitterEmpty();
 }
 
-SIGNAL( SIG_USART_RECV )
+SIGNAL( SIG_USART_RECV)
 {
-    pxMBFrameCBByteReceived(  );
+  pxMBFrameCBByteReceived();
 }
 
 #ifdef RTS_ENABLE
 SIGNAL( SIG_UART_TRANS )
-{
-    RTS_LOW;
+{ 
+  RTS_LOW;
 }
 #endif
 

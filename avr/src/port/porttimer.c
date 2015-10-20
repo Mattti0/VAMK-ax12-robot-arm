@@ -37,53 +37,48 @@
 #define MB_50US_TICKS           ( 20000UL )
 
 /* ----------------------- Static variables ---------------------------------*/
-static USHORT   usTimerOCRADelta;
-static USHORT   usTimerOCRBDelta;
+static USHORT usTimerOCRADelta;
+static USHORT usTimerOCRBDelta;
 
 /* ----------------------- Start implementation -----------------------------*/
-BOOL
-xMBPortTimersInit( USHORT usTim1Timerout50us )
+BOOL xMBPortTimersInit(USHORT usTim1Timerout50us)
 {
-    /* Calculate overflow counter an OCR values for Timer1. */
-    usTimerOCRADelta =
-        ( MB_TIMER_TICKS * usTim1Timerout50us ) / ( MB_50US_TICKS );
-
-    TCCR1A = 0x00;
-    TCCR1B = 0x00;
-    TCCR1C = 0x00;
-
-    vMBPortTimersDisable(  );
-
-    return TRUE;
+  /* Calculate overflow counter an OCR values for Timer1. */
+  usTimerOCRADelta = ( MB_TIMER_TICKS * usTim1Timerout50us) / ( MB_50US_TICKS);
+  
+  TCCR1A = 0x00;
+  TCCR1B = 0x00;
+  TCCR1C = 0x00;
+  
+  vMBPortTimersDisable();
+  
+  return TRUE;
 }
 
-
-inline void
-vMBPortTimersEnable(  )
+inline void vMBPortTimersEnable()
 {
-    TCNT1 = 0x0000;
-    if( usTimerOCRADelta > 0 )
-    {
-        TIMSK1 |= _BV( OCIE1A );
-        OCR1A = usTimerOCRADelta;
-    }
-
-    TCCR1B |= _BV( CS12 ) | _BV( CS10 );
+  TCNT1 = 0x0000;
+  if (usTimerOCRADelta > 0)
+  {
+    TIMSK1 |= _BV(OCIE1A);
+    OCR1A = usTimerOCRADelta;
+  }
+  
+  TCCR1B |= _BV(CS12) | _BV(CS10);
 }
 
-inline void
-vMBPortTimersDisable(  )
+inline void vMBPortTimersDisable()
 {
-    /* Disable the timer. */
-    TCCR1B &= ~( _BV( CS12 ) | _BV( CS10 ) );
-    /* Disable the output compare interrupts for channel A/B. */
-    TIMSK1 &= ~( _BV( OCIE1A ) );
-    /* Clear output compare flags for channel A/B. */
-    TIFR1 |= _BV( OCF1A ) ;
+  /* Disable the timer. */
+  TCCR1B &= ~(_BV(CS12) | _BV(CS10));
+  /* Disable the output compare interrupts for channel A/B. */
+  TIMSK1 &= ~(_BV(OCIE1A));
+  /* Clear output compare flags for channel A/B. */
+  TIFR1 |= _BV(OCF1A);
 }
 
-SIGNAL( TIMER1_COMPA_vect )
+SIGNAL( TIMER1_COMPA_vect)
 {
-    ( void )pxMBPortCBTimerExpired(  );
+  (void) pxMBPortCBTimerExpired();
 }
 

@@ -3,7 +3,7 @@
  *
  * Created: 7.10.2015 13:45:12
  *  Author: e1100983
- */ 
+ */
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "include/USART_driver.h"
@@ -19,23 +19,23 @@ static uint8_t _flag = 0;
 void initINT();
 void initTIM();
 
-ISR(INT7_vect)
+ISR( INT7_vect)
 {
   tim = TCNT1;
   
-  if(!flag)
+  if (!flag)
   {
-    TCNT1 = 0; 
-  }   
+    TCNT1 = 0;
+  }
   else
-    _flag  = 1;
+    _flag = 1;
   
   flag ^= 1;
 }
 
-ISR(TIMER1_OVF_vect)
+ISR( TIMER1_OVF_vect)
 {
-  if(flag)
+  if (flag)
     _ovf++;
 }
 
@@ -49,13 +49,13 @@ int main(void)
   USART_Init();
   sei();
   
-  while(1)
+  while (1)
   {
-    if(_flag)
+    if (_flag)
     {
       cli();
       //if(!_ovf)
-        //_tim = ((uint32_t)(_ovf << 8)) | tim;
+      //_tim = ((uint32_t)(_ovf << 8)) | tim;
       //
       //else _tim = tim;
       //_flag = 0;
@@ -64,7 +64,6 @@ int main(void)
       //_ovf = 0;
       //
       //USART_Transmit(USART_MODBUS, dist);
-      
       
       USART_Transmit(USART_MODBUS, (tim >> 8));
       USART_Transmit(USART_MODBUS, tim);
@@ -76,7 +75,7 @@ int main(void)
     {
       cli();
       PORTE |= TRIG;
-      for(trig = 80000; trig < 0; trig--)
+      for (trig = 80000; trig < 0; trig--)
       {
       }
       PORTE &= ~TRIG;

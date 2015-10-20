@@ -127,6 +127,6 @@ PR_BEGIN_EXTERN_C
 
 /*! @} */
 #ifdef __cplusplus
-    PR_END_EXTERN_C
+PR_END_EXTERN_C
 #endif
 #endif
