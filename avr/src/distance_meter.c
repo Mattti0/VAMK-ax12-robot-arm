@@ -8,99 +8,88 @@
 #include <avr/interrupt.h>
 #include "include/USART_driver.h"
 
-#define ECHO PE7
-#define TRIG (1<<PE6)
+#define ECHO  PE7
+#define TRIG  (1<<PE6)
+#define CM    58
 
 static uint16_t tim = 0;
 static uint8_t flag = 0;
 static uint8_t _ovf = 0;
-static uint8_t _flag = 0;
+static uint8_t c_echo = 0; // echo complete
 
-void initINT();
+//void initINT();
 void initTIM();
 
-ISR( INT7_vect)
+void trigger()
 {
-  tim = TCNT1;
-  
-  if (!flag)
-  {
-    TCNT1 = 0;
-  }
-  else
-    _flag = 1;
-  
-  flag ^= 1;
+  uint32_t  trig;
+  uint8_t   loop;
+  PORTE |= TRIG;
+//  for(loop = 0; loop < 27; loop++)
+//  {
+    for(trig = 8; trig > 0; trig--)
+    {}
+//  }
+  PORTE &= ~TRIG;
 }
 
-ISR( TIMER1_OVF_vect)
+
+ISR(TIMER1_CAPT_vect)
 {
-  if (flag)
+  if(((TCCR1B >> ICES1) & 1) == 1)
+  {
+    TCNT1 = 0;
+    TCCR1B &= ~(1 << ICES1);
+  }
+  else
+  {
+    tim = ICR1;
+    c_echo = 1;
+    TCCR1B |= (1 << ICES1);
+  }
+}
+
+ISR(TIMER1_OVF_vect)
+{
+  if(flag)
     _ovf++;
 }
 
 int main(void)
 {
-  uint8_t dist;
-  uint32_t _tim;
-  uint32_t trig;
-  initINT();
+  uint32_t dist;
+
+  DDRE &= ~(1 << ECHO);
+  DDRE |= TRIG;
+
   initTIM();
   USART_Init();
+
   sei();
-  
-  while (1)
+  trigger();
+
+  while(1)
   {
-    if (_flag)
+    if(c_echo)
     {
-      cli();
-      //if(!_ovf)
-      //_tim = ((uint32_t)(_ovf << 8)) | tim;
-      //
-      //else _tim = tim;
-      //_flag = 0;
-      //
-      //dist = (uint8_t)(_tim / 58);
-      //_ovf = 0;
-      //
-      //USART_Transmit(USART_MODBUS, dist);
-      
+      dist = tim/CM;
       USART_Transmit(USART_MODBUS, (tim >> 8));
       USART_Transmit(USART_MODBUS, tim);
-      _flag = 0;
-      sei();
+
+      c_echo = 0;
+      trigger();
     }
-    
-    else
-    {
-      cli();
-      PORTE |= TRIG;
-      for (trig = 80000; trig < 0; trig--)
-      {
-      }
-      PORTE &= ~TRIG;
-      sei();
-    }
+
   }
   
   return 0;
 }
 
-void initINT(void)
-{
-  DDRE &= ~(1 << ECHO);
-  DDRE |= TRIG;
-  
-  PORTE |= TRIG;
-  
-  EICRB |= (1 << ISC70);
-  EIMSK |= (1 << INT7);
-}
-
 void initTIM(void)
 {
   /* Timer 1 counter */
-  TCCR1A |= (1 << CS10);
-  TIMSK = (1 << TOIE1);
-  TCNT1 = 0;
+  TCCR1B  |= (1 << CS11);
+  TCCR1B  |= (1 << ICES1); // First capture is rising
+  TIMSK   |= (1 << TICIE1);
+  TCNT1   = 0;
 }
