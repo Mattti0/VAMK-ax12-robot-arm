@@ -14,8 +14,8 @@
 #define BAUD_SERVO  250000 // sarjaportin nopeus servolle
 #define BAUD_MODBUS 38400 // sarjaportin nopeus modbussille
 
-#define USART_MODBUS  1
-#define USART_SERVO   0
+#define USART_MODBUS  0
+#define USART_SERVO   1
 
 
 Err_t USART_Transmit(uint8_t port, uint8_t data);

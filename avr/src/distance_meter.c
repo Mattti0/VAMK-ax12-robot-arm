@@ -14,8 +14,7 @@
 #define ECHO PD4
 #define TRIG (1<<PE6)
 
-#define SCALE 0.125
-#define CM    58
+#define US_TO_CM_SCALER    58
 
 static uint16_t tim = 0;
 static uint8_t flag = 0;
@@ -80,7 +79,7 @@ int main(void)
       USART_Transmit(USART_MODBUS, (tim >> 8));
       USART_Transmit(USART_MODBUS, tim);
       
-      meas = (uint8_t)(((double)tim)/CM);
+      meas = (uint8_t)(((double)tim)/US_TO_CM_SCALER);
       USART_Transmit(USART_MODBUS, 0xFF);
 
       USART_Transmit(USART_MODBUS, (meas));
