@@ -213,8 +213,6 @@ void SetYX(uint8_t y, uint8_t x)
   uint8_t msg[2];
   Err_t err;
   uint8_t errp, param, parcount;
-  uint8_t th1, th2;
-  uint8_t msg[2];
   
   th2 = (uint8_t)(
       acos(
