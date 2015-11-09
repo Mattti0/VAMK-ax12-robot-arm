@@ -44,7 +44,7 @@
 /*-------------------------------------------------------------------*
  *    GLOBAL VARIABLES                                                *
  *--------------------------------------------------------------------*/
-/* Control flags */
+/* Control macros */
 #define RECEN PORTE |= (1 << 3); \
               PORTE &= ~(1 << 2)
 
@@ -65,51 +65,51 @@
 #define START       0xFF
 
 /*      Register                  Offset  Description, r/w rights, default value  */
-#define MODELNUMBER_L               0 /*  Lowest byte of model number R 12 (0X0C) */
-#define MODELNUMBER_H               1 /*  Highest byte of model number  R 0 (0X00)  */
-#define VERSIONOFFIRMWARE           2 /*  Information on the version of firmware  R - */
-#define ID                          3 /*  ID of Dynamixel RW  1 (0X01)  */
-#define BAUDRATE                    4 /*  Baud Rate of Dynamixel  RW  1 (0X01)  */
+#define MODELNUMBER_L               0 /*<  Lowest byte of model number R 12 (0X0C) */
+#define MODELNUMBER_H               1 /*<  Highest byte of model number  R 0 (0X00)  */
+#define VERSIONOFFIRMWARE           2 /*<  Information on the version of firmware  R - */
+#define ID                          3 /*<  ID of Dynamixel RW  1 (0X01)  */
+#define BAUDRATE                    4 /*<  Baud Rate of Dynamixel  RW  1 (0X01)  */
 #define RETURNDELAYTIME             5 /*  Return Delay Time RW  250 (0XFA)  */
-#define CWANGLELIMIT_L              6 /*  Lowest byte of clockwise Angle Limit  RW  0 (0X00)  */
-#define CWANGLELIMIT_H              7 /*  Highest byte of clockwise Angle Limit RW  0 (0X00)  */
-#define CCWANGLELIMIT_L             8 /*  Lowest byte of counterclockwise Angle Limit RW  255 (0XFF)  */
-#define CCWANGLELIMIT_H             9 /*  Highest byte of counterclockwise Angle Limit  RW  3 (0X03)  */
-#define THEHIGHESTLIMITTEMPERATURE  11  /*  Internal Limit Temperature   RW 70 (0X46) */
-#define THELOWESTLIMITVOLTAGE       12  /*  Lowest Limit Voltage  RW  60 (0X3C) */
-#define THEHIGHESTLIMITVOLTAGE      13  /*  Highest Limit Voltage RW  140 (0XBE)  */
-#define MAXTORQUE_L                 14  /*  Lowest byte of Max. Torque  RW  255 (0XFF)  */
-#define MAXTORQUE_H                 15  /*  Highest byte of Max. Torque RW  3 (0X03)  */
-#define STATUSRETURNLEVEL           16  /*  Status Return Level RW  2 (0X02)  */
-#define ALARMLED                    17  /*  LED for Alarm RW  36(0x24)  */
-#define ALARMSHUTDOWN               18  /*  Shutdown for Alarm  RW  36(0x24)  */
-#define TORQUEENABLE                24  /*  Torque On/Off RW  0 (0X00)  */
-#define LED                         25  /*  LED On/Off  RW  0 (0X00)  */
-#define CWCOMPLIANCEMARGIN          26  /*  CW Compliance margin  RW  1 (0X01)  */
-#define CCWCOMPLIANCEMARGIN         27  /*  CCW Compliance margin RW  1 (0X01)  */
-#define CWCOMPLIANCESLOPE           28  /*  CW Compliance slope RW  32 (0X20) */
-#define CCWCOMPLIANCESLOPE          29  /*  CCW Compliance slope  RW  32 (0X20) */
-#define GOALPOSITION_L              30  /*  Lowest byte of Goal Position  RW  - */
-#define GOALPOSITION_H              31  /*  Highest byte of Goal Position RW  - */
-#define MOVINGSPEED_L               32  /*  Lowest byte of Moving Speed (Moving Velocity) RW  - */
-#define MOVINGSPEED_H               33  /*  Highest byte of Moving Speed (Moving Velocity)  RW  - */
-#define TORQUELIMIT_L               34  /*  Lowest byte of Torque Limit (Goal Torque) RW  ADD14 */
-#define TORQUELIMIT_H               35  /*  Highest byte of Torque Limit (Goal Torque)  RW  ADD15 */
-#define PRESENTPOSITION_L           36  /*  Lowest byte of Current Position (Present Velocity)  R - */
-#define PRESENTPOSITION_H           37  /*  Highest byte of Current Position (Present Velocity) R - */
-#define PRESENTSPEED_L              38  /*  Lowest byte of Current Speed  R - */
-#define PRESENTSPEED_H              39  /*  Highest byte of Current Speed R - */
-#define PRESENTLOAD_L               40  /*  Lowest byte of Current Load R - */
-#define PRESENTLOAD_H               41  /*  Highest byte of Current Load  R - */
-#define PRESENTVOLTAGE              42  /*  Current Voltage R - */
-#define PRESENTTEMPERATURE          43  /*  Current Temperature R - */
-#define REGISTERED                  44  /*  Means if Instruction is registered  R 0 (0X00)  */
-#define MOVING                      46  /*  Means if there is any movement  R 0 (0X00)  */
-#define LOCK                        47  /*  Locking EEPROM  RW  0 (0X00)  */
-#define PUNCH_L                     48  /*  Lowest byte of Punch  RW  32 (0X20) */
-#define PUNCH_H                     49  /*  Highest byte of Punch RW  0 (0X00)  */
+#define CWANGLELIMIT_L              6 /*<  Lowest byte of clockwise Angle Limit  RW  0 (0X00)  */
+#define CWANGLELIMIT_H              7 /*<  Highest byte of clockwise Angle Limit RW  0 (0X00)  */
+#define CCWANGLELIMIT_L             8 /*<  Lowest byte of counterclockwise Angle Limit RW  255 (0XFF)  */
+#define CCWANGLELIMIT_H             9 /*<  Highest byte of counterclockwise Angle Limit  RW  3 (0X03)  */
+#define THEHIGHESTLIMITTEMPERATURE  11  /*<  Internal Limit Temperature   RW 70 (0X46) */
+#define THELOWESTLIMITVOLTAGE       12  /*<  Lowest Limit Voltage  RW  60 (0X3C) */
+#define THEHIGHESTLIMITVOLTAGE      13  /*<  Highest Limit Voltage RW  140 (0XBE)  */
+#define MAXTORQUE_L                 14  /*<  Lowest byte of Max. Torque  RW  255 (0XFF)  */
+#define MAXTORQUE_H                 15  /*<  Highest byte of Max. Torque RW  3 (0X03)  */
+#define STATUSRETURNLEVEL           16  /*<  Status Return Level RW  2 (0X02)  */
+#define ALARMLED                    17  /*<  LED for Alarm RW  36(0x24)  */
+#define ALARMSHUTDOWN               18  /*<  Shutdown for Alarm  RW  36(0x24)  */
+#define TORQUEENABLE                24  /*<  Torque On/Off RW  0 (0X00)  */
+#define LED                         25  /*<  LED On/Off  RW  0 (0X00)  */
+#define CWCOMPLIANCEMARGIN          26  /*<  CW Compliance margin  RW  1 (0X01)  */
+#define CCWCOMPLIANCEMARGIN         27  /*<  CCW Compliance margin RW  1 (0X01)  */
+#define CWCOMPLIANCESLOPE           28  /*<  CW Compliance slope RW  32 (0X20) */
+#define CCWCOMPLIANCESLOPE          29  /*<  CCW Compliance slope  RW  32 (0X20) */
+#define GOALPOSITION_L              30  /*<  Lowest byte of Goal Position  RW  - */
+#define GOALPOSITION_H              31  /*<  Highest byte of Goal Position RW  - */
+#define MOVINGSPEED_L               32  /*<  Lowest byte of Moving Speed (Moving Velocity) RW  - */
+#define MOVINGSPEED_H               33  /*<  Highest byte of Moving Speed (Moving Velocity)  RW  - */
+#define TORQUELIMIT_L               34  /*<  Lowest byte of Torque Limit (Goal Torque) RW  ADD14 */
+#define TORQUELIMIT_H               35  /*<  Highest byte of Torque Limit (Goal Torque)  RW  ADD15 */
+#define PRESENTPOSITION_L           36  /*<  Lowest byte of Current Position (Present Velocity)  R - */
+#define PRESENTPOSITION_H           37  /*<  Highest byte of Current Position (Present Velocity) R - */
+#define PRESENTSPEED_L              38  /*<  Lowest byte of Current Speed  R - */
+#define PRESENTSPEED_H              39  /*<  Highest byte of Current Speed R - */
+#define PRESENTLOAD_L               40  /*<  Lowest byte of Current Load R - */
+#define PRESENTLOAD_H               41  /*<  Highest byte of Current Load  R - */
+#define PRESENTVOLTAGE              42  /*<  Current Voltage R - */
+#define PRESENTTEMPERATURE          43  /*<  Current Temperature R - */
+#define REGISTERED                  44  /*<  Means if Instruction is registered  R 0 (0X00)  */
+#define MOVING                      46  /*<  Means if there is any movement  R 0 (0X00)  */
+#define LOCK                        47  /*<  Locking EEPROM  RW  0 (0X00)  */
+#define PUNCH_L                     48  /*<  Lowest byte of Punch  RW  32 (0X20) */
+#define PUNCH_H                     49  /*<  Highest byte of Punch RW  0 (0X00)  */
 
-static const uint8_t servoTable[] = {2, 12, 1, 3};
+static const uint8_t servoTable[] = {2, 12, 1, 3}; /*< Assigned servo id's */
 
 static const uint16_t AngleLookupTable[] = {0x0, 0x3, 0x6, 0xA, 0xD, 0x11, 0x14, 0x17, 0x1B, 0x1E, 0x22,
     0x25, 0x28, 0x2C, 0x2F, 0x33, 0x36, 0x39, 0x3D, 0x40, 0x44, 0x47, 0x4B, 0x4E, 0x51, 0x55, 0x58, 0x5C,
@@ -141,40 +141,33 @@ static const uint16_t AngleLookupTable[] = {0x0, 0x3, 0x6, 0xA, 0xD, 0x11, 0x14,
  *--------------------------------------------------------------------*/
 typedef enum
 {
-  InstructionError = 0b01000000, /*  Bit 6  When undefined Instruction is transmitted or the Action command is delivered without  */
-  OverloadError = 0b00100000, /*  Bit 5  When the current load cannot be controlled with the set maximum torque  */
-  CheckSumError = 0b00010000, /*  Bit 4  When the Checksum of the transmitted Instruction Packet is invalid  */
-  RangeError = 0b00001000, /*  Bit 3  When the command is given beyond the range of usage  */
-  OverHeatingError = 0b00000100, /*  Bit 2  When the internal temperature is out of the range of operating temperature set in  */
-  AngleLimitError = 0b00000010, /*  Bit 1  When Goal Position is written with the value that is not between CW Angle Limit and CCW Angle Limit  */
-  InputVoltageError = 0b00000001 /*  Bit 0  When the applied voltage is out of the range of operating voltage set in the Control Table  */
+  InstructionError = 0b01000000, /*<  Bit 6  When undefined Instruction is transmitted or the Action command is delivered without  */
+  OverloadError = 0b00100000, /*<  Bit 5  When the current load cannot be controlled with the set maximum torque  */
+  CheckSumError = 0b00010000, /*<  Bit 4  When the Checksum of the transmitted Instruction Packet is invalid  */
+  RangeError = 0b00001000, /*<  Bit 3  When the command is given beyond the range of usage  */
+  OverHeatingError = 0b00000100, /*<  Bit 2  When the internal temperature is out of the range of operating temperature set in  */
+  AngleLimitError = 0b00000010, /*<  Bit 1  When Goal Position is written with the value that is not between CW Angle Limit and CCW Angle Limit  */
+  InputVoltageError = 0b00000001 /*<  Bit 0  When the applied voltage is out of the range of operating voltage set in the Control Table  */
 } StatusErr_t;
 
 typedef enum
 {
-  PING_ = 0x01, /* No action. Used for obtaining a Status Packet, 0 */
-  READ_DATA = 0x02, /* Reading values in the Control Table, 2 */
-  WRITE_DATA = 0x03, /* Writing values to the Control Table, 2 ~ */
-  REG_WRITE = 0x04, /* Similar to WRITE_DATA, but stays in standby mode until the ACTION instuction is given, 2 ~ */
-  ACTION = 0x05, /* Triggers the action registered by the REG_WRITE instruction, 0 */
-  RESET = 0x06, /* Changes the control table values of the Dynamixel actuator to the Factory Default Value settings, 0 */
-  SYNC_WRITE = 0x83 /* Used for controlling many Dynamixel actuators at the same time, 4 */
+  PING_ = 0x01, /*< No action. Used for obtaining a Status Packet, 0 */
+  READ_DATA = 0x02, /*< Reading values in the Control Table, 2 */
+  WRITE_DATA = 0x03, /*< Writing values to the Control Table, 2 ~ */
+  REG_WRITE = 0x04, /*< Similar to WRITE_DATA, but stays in standby mode until the ACTION instuction is given, 2 ~ */
+  ACTION = 0x05, /*< Triggers the action registered by the REG_WRITE instruction, 0 */
+  RESET = 0x06, /*< Changes the control table values of the Dynamixel actuator to the Factory Default Value settings, 0 */
+  SYNC_WRITE = 0x83 /*< Used for controlling many Dynamixel actuators at the same time, 4 */
 } RobotCommand_t;
 
 /*-------------------------------------------------------------------*
  *    FUNCTION PROTOTYPES                                             *
  *--------------------------------------------------------------------*/
-StatusErr_t idPing(uint8_t id);
-StatusErr_t ReadData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *rBuffer);
-StatusErr_t WriteData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer);
-StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer);
-StatusErr_t Action();
-StatusErr_t Reset(uint8_t id);
-StatusErr_t SyncWrite(uint8_t id);
-
+/* Higher level functions, able to call everywhere at program*/
 Err_t receiveStatus(uint8_t id, uint8_t *status, uint8_t *param, uint8_t *parcount);
-Err_t turnMotor(uint8_t id, uint16_t angle);
-Err_t spinMotor(uint8_t id, uint16_t sp, uint8_t dir);
+Err_t TurnMotor(uint8_t id, uint16_t angle);
+Err_t SpinMotor(uint8_t id, uint16_t sp, uint8_t dir);
 void SetYX(uint8_t y, uint8_t x);
 
 #endif /* INCLUDE_AX12_H_ */

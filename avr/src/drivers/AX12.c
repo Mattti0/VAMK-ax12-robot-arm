@@ -1,32 +1,128 @@
-/*
- * AX12.c
- *
- *  Created on: 30.9.2015
- *      Author: suomima
- */
+/***************************************************************************
+ *   Copyright (C) $Year$ by $Author: e1100983 $   *
+ *   $Email$   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
+/*********************************************************************
+ *
+ * 1.  NAME
+ *     $Source$
+ * 2.  DESCRIPTION
+ *
+ * 6.  VERSIONS
+ *       Original:
+ *         $Date: 2014-03-29 17:41:28 +0200 (Sat, 29 Mar 2014) $ / $Author: e1100983 $
+ *
+ *       Version history: Veni , Vidi , Vici
+ *
+ *
+ **********************************************************************/
+
+/*-------------------------------------------------------------------*
+ *    HEADER FILES                                                    *
+ *--------------------------------------------------------------------*/
 #include "AX12.h"
 
-/**
- *  Low-level functions from AX commands
- */
+/*-------------------------------------------------------------------*
+ *    GLOBAL VARIABLES                                                *
+ *--------------------------------------------------------------------*/
+/* Control flags */
+//#define DEBUG
+
+/* Globaal constants */
+
+/* Globaal variables */
+
+/* Globaal structures */
+
+/*-------------------------------------------------------------------*
+ *    FUNCTION PROTOTYPES                                             *
+ *--------------------------------------------------------------------*/
+
+/*********************************************************************
+ *    LOW LEVEL FUNCTIONS                                             *
+ **********************************************************************/
+/* Low level functions */
+StatusErr_t idPing(uint8_t id);
+StatusErr_t readData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *rBuffer);
+StatusErr_t writeData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer);
+StatusErr_t regWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer);
+StatusErr_t action();
+StatusErr_t resetMotor(uint8_t id);
+StatusErr_t syncWrite(uint8_t id);
+
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
 StatusErr_t idPing(uint8_t id)
 {
   return 0;
 }
 
-StatusErr_t ReadData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *rBuffer)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+StatusErr_t readData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *rBuffer)
 {
   
   return 0;
 }
 
-StatusErr_t WriteData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+StatusErr_t writeData(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer)
 {
   return 0;
 }
 
-StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+StatusErr_t regWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wBuffer)
 {
   Err_t err = ERROR;
   uint8_t check, i;
@@ -50,7 +146,7 @@ StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wB
   
   for (i = 0; i < 6; i++)
   {
-    err = USART_Transmit(USART_SERVO, data[i]);
+    err = USARTTransmit(USART_SERVO, data[i]);
     if (err != ERROR_OK)
       return err;
   }
@@ -59,18 +155,28 @@ StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wB
   {
     for (i = 0; i < byteCount; i++)
     {
-      err = USART_Transmit(USART_SERVO, *(wBuffer + i));
+      err = USARTTransmit(USART_SERVO, *(wBuffer + i));
       if (err != ERROR_OK)
         return err;
     }
   }
   
-  err = USART_Transmit(USART_SERVO, check);
+  err = USARTTransmit(USART_SERVO, check);
   
   return 0;
 }
 
-StatusErr_t Action()
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+StatusErr_t action()
 {
   uint8_t check = ~(0xFE + 2 + (uint8_t)ACTION);
   uint8_t i;
@@ -81,25 +187,55 @@ StatusErr_t Action()
   
   for (i = 0; i < 6; i++)
   {
-    USART_Transmit(USART_SERVO, data[i]);
+    USARTTransmit(USART_SERVO, data[i]);
   }
   
   return 0;
 }
 
-StatusErr_t Reset(uint8_t id)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+StatusErr_t resetMotor(uint8_t id)
 {
   return 0;
 }
 
-StatusErr_t SyncWrite(uint8_t id)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+StatusErr_t syncWrite(uint8_t id)
 {
   return 0;
 }
 
-/**
- *  Higher level functions
- */
+/*********************************************************************
+ *    HIGH LEVEL FUNCTIONS                                             *
+ **********************************************************************/
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
 Err_t receiveStatus(uint8_t id, uint8_t *status, uint8_t *param, uint8_t *parcount)
 {
   uint16_t start = 0;
@@ -112,27 +248,27 @@ Err_t receiveStatus(uint8_t id, uint8_t *status, uint8_t *param, uint8_t *parcou
   do
   {
     start = (start << 8);
-    start |= (uint16_t)USART_Receive(USART_SERVO);
+    start |= (uint16_t)USARTReceive(USART_SERVO);
   }
   while (start != 0xFFFF);
   
-  if (id != USART_Receive(USART_SERVO))
+  if (id != USARTReceive(USART_SERVO))
     return INVALID_ID;
   
-  *parcount = USART_Receive(USART_SERVO);
+  *parcount = USARTReceive(USART_SERVO);
   
-  *status = USART_Receive(USART_SERVO);
+  *status = USARTReceive(USART_SERVO);
   
   if (*parcount > 2)
   {
     for (i = 0; i < (*parcount) - 2; i++)
     {
-      *(param + i) = USART_Receive(USART_SERVO);
+      *(param + i) = USARTReceive(USART_SERVO);
       checksum += *(param + i);
     }
   }
   
-  receiveChecksum = USART_Receive(USART_SERVO);
+  receiveChecksum = USARTReceive(USART_SERVO);
   
   checksum += (id + *parcount + *status);
   checksum = ~checksum;
@@ -147,7 +283,17 @@ Err_t receiveStatus(uint8_t id, uint8_t *status, uint8_t *param, uint8_t *parcou
     return STATUS_ERR;
 }
 
-Err_t turnMotor(uint8_t id, uint16_t angle)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+Err_t TurnMotor(uint8_t id, uint16_t angle)
 {
   Err_t err = ERROR;
   uint8_t errp, param, parcount;
@@ -170,7 +316,7 @@ Err_t turnMotor(uint8_t id, uint16_t angle)
   
   for (i = 0; i < 9; i++)
   {
-    err = USART_Transmit(USART_SERVO, data[i]);
+    err = USARTTransmit(USART_SERVO, data[i]);
     if (err != ERROR_OK)
       return err;
   }
@@ -187,7 +333,17 @@ Err_t turnMotor(uint8_t id, uint16_t angle)
   return err;
 }
 
-Err_t spinMotor(uint8_t id, uint16_t sp, uint8_t dir)
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
+Err_t SpinMotor(uint8_t id, uint16_t sp, uint8_t dir)
 {
   /**
    * Wheel mode register is 11 bits
@@ -208,6 +364,16 @@ Err_t spinMotor(uint8_t id, uint16_t sp, uint8_t dir)
   return err;
 }
 
+/*********************************************************************
+ ;  F U N C T I O N    D E S C R I P T I O N
+ ;---------------------------------------------------------------------
+ ; NAME:
+ ; DESCRIPTION:
+ ;  Input:
+ ;  Output:
+ ;  Used global variables:
+ ; REMARKS when using this function:
+ ;*********************************************************************/
 void SetYX(uint8_t y, uint8_t x)
 {
   uint8_t th1, th2;
@@ -224,30 +390,30 @@ void SetYX(uint8_t y, uint8_t x)
   
   msg[0] = (uint8_t)AngleLookupTable[th1];
   msg[1] = (uint8_t)(AngleLookupTable[th1] >> 8);
-  RegWrite(servoTable[2], GOALPOSITION_L, 2, msg);
+  regWrite(servoTable[2], GOALPOSITION_L, 2, msg);
   while (!(UCSR0A & (1 << TXC0)))
     ;
   
   msg[0] = (uint8_t)AngleLookupTable[th2];
   msg[1] = (uint8_t)(AngleLookupTable[th2] >> 8);
-  RegWrite(servoTable[3], GOALPOSITION_L, 2, msg);
+  regWrite(servoTable[3], GOALPOSITION_L, 2, msg);
   while (!(UCSR0A & (1 << TXC0)))
     ;
   
-  Action();
+  action();
   
   //printf("TH0: %d; TH1: %d\n", th[0], th[1]);
   //turnMotor(servoTable[1], th[0]);
   //turnMotor(servoTable[2], th[1]);
   msg[0] = (uint8_t)AngleLookupTable[th1];
   msg[1] = (uint8_t)(AngleLookupTable[th1] >> 8);
-  RegWrite(servoTable[1], GOALPOSITION_L, 2, msg);
+  regWrite(servoTable[1], GOALPOSITION_L, 2, msg);
   
   msg[0] = (uint8_t)AngleLookupTable[th2];
   msg[1] = (uint8_t)(AngleLookupTable[th2] >> 8);
-  RegWrite(servoTable[2], GOALPOSITION_L, 2, msg);
+  regWrite(servoTable[2], GOALPOSITION_L, 2, msg);
   
-  Action();
+  action();
   
   //printf("TH0: %d; TH1: %d\n", th[0], th[1]);
   //turnMotor(servoTable[1], th[0]);
