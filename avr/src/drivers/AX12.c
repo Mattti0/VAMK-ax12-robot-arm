@@ -405,15 +405,15 @@ void SetYX(uint8_t y, uint8_t x)
   //printf("TH0: %d; TH1: %d\n", th[0], th[1]);
   //turnMotor(servoTable[1], th[0]);
   //turnMotor(servoTable[2], th[1]);
-  msg[0] = (uint8_t)AngleLookupTable[th1];
-  msg[1] = (uint8_t)(AngleLookupTable[th1] >> 8);
-  regWrite(servoTable[1], GOALPOSITION_L, 2, msg);
-  
-  msg[0] = (uint8_t)AngleLookupTable[th2];
-  msg[1] = (uint8_t)(AngleLookupTable[th2] >> 8);
-  regWrite(servoTable[2], GOALPOSITION_L, 2, msg);
-  
-  action();
+//  msg[0] = (uint8_t)AngleLookupTable[th1];
+//  msg[1] = (uint8_t)(AngleLookupTable[th1] >> 8);
+//  regWrite(servoTable[1], GOALPOSITION_L, 2, msg);
+//
+//  msg[0] = (uint8_t)AngleLookupTable[th2];
+//  msg[1] = (uint8_t)(AngleLookupTable[th2] >> 8);
+//  regWrite(servoTable[2], GOALPOSITION_L, 2, msg);
+//
+//  action();
   
   //printf("TH0: %d; TH1: %d\n", th[0], th[1]);
   //turnMotor(servoTable[1], th[0]);

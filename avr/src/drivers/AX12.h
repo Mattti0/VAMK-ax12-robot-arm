@@ -64,50 +64,138 @@
 
 #define START       0xFF
 
-/*      Register                  Offset  Description, r/w rights, default value  */
-#define MODELNUMBER_L               0 /*<  Lowest byte of model number R 12 (0X0C) */
-#define MODELNUMBER_H               1 /*<  Highest byte of model number  R 0 (0X00)  */
-#define VERSIONOFFIRMWARE           2 /*<  Information on the version of firmware  R - */
-#define ID                          3 /*<  ID of Dynamixel RW  1 (0X01)  */
-#define BAUDRATE                    4 /*<  Baud Rate of Dynamixel  RW  1 (0X01)  */
-#define RETURNDELAYTIME             5 /*  Return Delay Time RW  250 (0XFA)  */
-#define CWANGLELIMIT_L              6 /*<  Lowest byte of clockwise Angle Limit  RW  0 (0X00)  */
-#define CWANGLELIMIT_H              7 /*<  Highest byte of clockwise Angle Limit RW  0 (0X00)  */
-#define CCWANGLELIMIT_L             8 /*<  Lowest byte of counterclockwise Angle Limit RW  255 (0XFF)  */
-#define CCWANGLELIMIT_H             9 /*<  Highest byte of counterclockwise Angle Limit  RW  3 (0X03)  */
-#define THEHIGHESTLIMITTEMPERATURE  11  /*<  Internal Limit Temperature   RW 70 (0X46) */
-#define THELOWESTLIMITVOLTAGE       12  /*<  Lowest Limit Voltage  RW  60 (0X3C) */
-#define THEHIGHESTLIMITVOLTAGE      13  /*<  Highest Limit Voltage RW  140 (0XBE)  */
-#define MAXTORQUE_L                 14  /*<  Lowest byte of Max. Torque  RW  255 (0XFF)  */
-#define MAXTORQUE_H                 15  /*<  Highest byte of Max. Torque RW  3 (0X03)  */
-#define STATUSRETURNLEVEL           16  /*<  Status Return Level RW  2 (0X02)  */
-#define ALARMLED                    17  /*<  LED for Alarm RW  36(0x24)  */
-#define ALARMSHUTDOWN               18  /*<  Shutdown for Alarm  RW  36(0x24)  */
-#define TORQUEENABLE                24  /*<  Torque On/Off RW  0 (0X00)  */
-#define LED                         25  /*<  LED On/Off  RW  0 (0X00)  */
-#define CWCOMPLIANCEMARGIN          26  /*<  CW Compliance margin  RW  1 (0X01)  */
-#define CCWCOMPLIANCEMARGIN         27  /*<  CCW Compliance margin RW  1 (0X01)  */
-#define CWCOMPLIANCESLOPE           28  /*<  CW Compliance slope RW  32 (0X20) */
-#define CCWCOMPLIANCESLOPE          29  /*<  CCW Compliance slope  RW  32 (0X20) */
-#define GOALPOSITION_L              30  /*<  Lowest byte of Goal Position  RW  - */
-#define GOALPOSITION_H              31  /*<  Highest byte of Goal Position RW  - */
-#define MOVINGSPEED_L               32  /*<  Lowest byte of Moving Speed (Moving Velocity) RW  - */
-#define MOVINGSPEED_H               33  /*<  Highest byte of Moving Speed (Moving Velocity)  RW  - */
-#define TORQUELIMIT_L               34  /*<  Lowest byte of Torque Limit (Goal Torque) RW  ADD14 */
-#define TORQUELIMIT_H               35  /*<  Highest byte of Torque Limit (Goal Torque)  RW  ADD15 */
-#define PRESENTPOSITION_L           36  /*<  Lowest byte of Current Position (Present Velocity)  R - */
-#define PRESENTPOSITION_H           37  /*<  Highest byte of Current Position (Present Velocity) R - */
-#define PRESENTSPEED_L              38  /*<  Lowest byte of Current Speed  R - */
-#define PRESENTSPEED_H              39  /*<  Highest byte of Current Speed R - */
-#define PRESENTLOAD_L               40  /*<  Lowest byte of Current Load R - */
-#define PRESENTLOAD_H               41  /*<  Highest byte of Current Load  R - */
-#define PRESENTVOLTAGE              42  /*<  Current Voltage R - */
-#define PRESENTTEMPERATURE          43  /*<  Current Temperature R - */
-#define REGISTERED                  44  /*<  Means if Instruction is registered  R 0 (0X00)  */
-#define MOVING                      46  /*<  Means if there is any movement  R 0 (0X00)  */
-#define LOCK                        47  /*<  Locking EEPROM  RW  0 (0X00)  */
-#define PUNCH_L                     48  /*<  Lowest byte of Punch  RW  32 (0X20) */
-#define PUNCH_H                     49  /*<  Highest byte of Punch RW  0 (0X00)  */
+
+/*      Register                  Offset */
+#define MODELNUMBER_L               0 
+#define MODELNUMBER_H               1 
+#define VERSIONOFFIRMWARE           2 
+#define ID                          3 
+#define BAUDRATE                    4 
+#define RETURNDELAYTIME             5 
+#define CWANGLELIMIT_L              6 
+#define CWANGLELIMIT_H              7 
+#define CCWANGLELIMIT_L             8 
+#define CCWANGLELIMIT_H             9 
+#define THEHIGHESTLIMITTEMPERATURE  11
+#define THELOWESTLIMITVOLTAGE       12
+#define THEHIGHESTLIMITVOLTAGE      13
+#define MAXTORQUE_L                 14
+#define MAXTORQUE_H                 15
+#define STATUSRETURNLEVEL           16
+#define ALARMLED                    17
+#define ALARMSHUTDOWN               18
+#define TORQUEENABLE                24
+#define LED                         25
+#define CWCOMPLIANCEMARGIN          26
+#define CCWCOMPLIANCEMARGIN         27
+#define CWCOMPLIANCESLOPE           28
+#define CCWCOMPLIANCESLOPE          29
+#define GOALPOSITION_L              30
+#define GOALPOSITION_H              31
+#define MOVINGSPEED_L               32
+#define MOVINGSPEED_H               33
+#define TORQUELIMIT_L               34
+#define TORQUELIMIT_H               35
+#define PRESENTPOSITION_L           36
+#define PRESENTPOSITION_H           37
+#define PRESENTSPEED_L              38
+#define PRESENTSPEED_H              39
+#define PRESENTLOAD_L               40
+#define PRESENTLOAD_H               41
+#define PRESENTVOLTAGE              42
+#define PRESENTTEMPERATURE          43
+#define REGISTERED                  44
+#define MOVING                      46
+#define LOCK                        47
+#define PUNCH_L                     48
+#define PUNCH_H                     49
+
+/*! \def MODELNUMBER_L
+ * \brief Lowest byte of model number R 12 (0X0C) */
+/*! \def MODELNUMBER_H
+ * \brief Highest byte of model number  R 0 (0X00)  */
+/*! \def VERSIONOFFIRMWARE
+ * \brief Information on the version of firmware  R - */
+/*! \def ID
+ * \brief ID of Dynamixel RW  1 (0X01)  */
+/*! \def BAUDRATE
+ * \brief Baud Rate of Dynamixel  RW  1 (0X01)  */
+/*! \def RETURNDELAYTIME
+ * \brief Return Delay Time RW  250 (0XFA)  */
+/*! \def CWANGLELIMIT_L
+ * \brief Lowest byte of clockwise Angle Limit  RW  0 (0X00)  */
+/*! \def CWANGLELIMIT_H
+ * \brief Highest byte of clockwise Angle Limit RW  0 (0X00)  */
+/*! \def CCWANGLELIMIT_L
+ * \brief Lowest byte of counterclockwise Angle Limit RW  255 (0XFF)  */
+/*! \def CCWANGLELIMIT_H
+ * \brief Highest byte of counterclockwise Angle Limit  RW  3 (0X03)  */
+/*! \def THEHIGHESTLIMITTEMPERATURE
+ * \brief Internal Limit Temperature   RW 70 (0X46) */
+/*! \def THELOWESTLIMITVOLTAGE
+ * \brief Lowest Limit Voltage  RW  60 (0X3C) */
+/*! \def THEHIGHESTLIMITVOLTAGE
+ * \brief Highest Limit Voltage RW  140 (0XBE)  */
+/*! \def MAXTORQUE_L
+ * \brief Lowest byte of Max. Torque  RW  255 (0XFF)  */
+/*! \def MAXTORQUE_H
+ * \brief Highest byte of Max. Torque RW  3 (0X03)  */
+/*! \def STATUSRETURNLEVEL
+ * \brief Status Return Level RW  2 (0X02)  */
+/*! \def ALARMLED
+ * \brief LED for Alarm RW  36(0x24)  */
+/*! \def ALARMSHUTDOWN
+ * \brief Shutdown for Alarm  RW  36(0x24)  */
+/*! \def TORQUEENABLE
+ * \brief Torque On/Off RW  0 (0X00)  */
+/*! \def LED
+ * \brief LED On/Off  RW  0 (0X00)  */
+/*! \def CWCOMPLIANCEMARGIN
+ * \brief CW Compliance margin  RW  1 (0X01)  */
+/*! \def CCWCOMPLIANCEMARGIN
+ * \brief CCW Compliance margin RW  1 (0X01)  */
+/*! \def CWCOMPLIANCESLOPE
+ * \brief CW Compliance slope RW  32 (0X20) */
+/*! \def CCWCOMPLIANCESLOPE
+ * \brief CCW Compliance slope  RW  32 (0X20) */
+/*! \def GOALPOSITION_L
+ * \brief Lowest byte of Goal Position  RW  - */
+/*! \def GOALPOSITION_H
+ * \brief Highest byte of Goal Position RW  - */
+/*! \def MOVINGSPEED_L
+ * \brief Lowest byte of Moving Speed (Moving Velocity) RW  - */
+/*! \def MOVINGSPEED_H
+ * \brief Highest byte of Moving Speed (Moving Velocity)  RW  - */
+/*! \def TORQUELIMIT_L
+ * \brief Lowest byte of Torque Limit (Goal Torque) RW  ADD14 */
+/*! \def TORQUELIMIT_H
+ * \brief Highest byte of Torque Limit (Goal Torque)  RW  ADD15 */
+/*! \def PRESENTPOSITION_L
+ * \brief Lowest byte of Current Position (Present Velocity)  R - */
+/*! \def PRESENTPOSITION_H
+ * \brief Highest byte of Current Position (Present Velocity) R - */
+/*! \def PRESENTSPEED_L
+ * \brief Lowest byte of Current Speed  R - */
+/*! \def PRESENTSPEED_H
+ * \brief Highest byte of Current Speed R - */
+/*! \def PRESENTLOAD_L
+ * \brief Lowest byte of Current Load R - */
+/*! \def PRESENTLOAD_H
+ * \brief Highest byte of Current Load  R - */
+/*! \def PRESENTVOLTAGE
+ * \brief Current Voltage R - */
+/*! \def PRESENTTEMPERATURE
+ * \brief Current Temperature R - */
+/*! \def REGISTERED
+ * \brief Means if Instruction is registered  R 0 (0X00)  */
+/*! \def MOVING
+ * \brief Means if there is any movement  R 0 (0X00)  */
+/*! \def LOCK
+ * \brief Locking EEPROM  RW  0 (0X00)  */
+/*! \def PUNCH_L
+ * \brief Lowest byte of Punch  RW  32 (0X20) */
+/*! \def PUNCH_H
+ * \brief Highest byte of Punch RW  0 (0X00)  */
 
 static const uint8_t servoTable[] = {2, 12, 1, 3}; /*< Assigned servo id's */
 
