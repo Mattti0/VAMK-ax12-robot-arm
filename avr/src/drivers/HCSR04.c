@@ -14,36 +14,36 @@ static uint8_t echo_complete = 0; // echo complete
 uint16_t getDistance(void)
 {
   uint16_t dist;
-
+  
   echo_complete = 0;
-
+  
   PORTE |= TRIG;
   _delay_us(10);
   PORTE &= ~TRIG;
-
-  while(!echo_complete)
+  
+  while (!echo_complete)
     ;
-
+  
   dist = uStoCm(timeUs);
-
+  
   return (dist);
 }
 
 uint16_t uStoCm(uint16_t us)
 {
   uint16_t cm;
-
-  cm = us/US_TO_CM_SCALER;
-
+  
+  cm = us / US_TO_CM_SCALER;
+  
   return (cm);
 }
 
 uint16_t uStoMm(uint16_t us)
 {
   uint16_t mm;
-
-  mm = ((double)us/US_TO_CM_SCALER)*10;
-
+  
+  mm = ((double)us / US_TO_CM_SCALER) * 10;
+  
   return (mm);
 }
 
@@ -54,26 +54,22 @@ void HCSR04init(void)
 {
   DDRD &= ~(1 << ECHO);
   DDRE |= TRIG;
-
+  
   /* Timer 1 counter */
-  TCCR1B  |= (1 << CS11);
-  TCCR1B  |= (1 << ICES1); // First capture is rising
-  TIMSK   |= (1 << TICIE1);
-  TCNT1   = 0;
-
+  TCCR1B |= (1 << CS11);
+  TCCR1B |= (1 << ICES1); // First capture is rising
+  TIMSK |= (1 << TICIE1);
+  TCNT1 = 0;
+  
   sei();
 }
-
-
-
-
 
 /**********************************
  * Interrupt vectors
  **********************************/
 ISR(TIMER1_CAPT_vect)
 {
-  if(!flag)
+  if (!flag)
   {
     TCNT1 = 0;
     TCCR1B &= ~(1 << ICES1);
@@ -90,6 +86,6 @@ ISR(TIMER1_CAPT_vect)
 
 ISR(TIMER1_OVF_vect)
 {
-  if(flag)
+  if (flag)
     _ovf++;
 }

@@ -30,8 +30,7 @@ StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wB
 {
   Err_t err = ERROR;
   uint8_t check, i;
-  uint8_t data[] =
-  { 0xFF, 0xFF, id, byteCount + 3, (uint8_t) REG_WRITE, regAddr };
+  uint8_t data[] = {0xFF, 0xFF, id, byteCount + 3, (uint8_t)REG_WRITE, regAddr};
   uint16_t checksum = 0;
   
   for (i = 2; i < 6; i++)
@@ -43,9 +42,10 @@ StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wB
       checksum += *(wBuffer + i);
   }
   
-  check = ~((uint8_t) checksum);
+  check = ~((uint8_t)checksum);
   
   TRAEN
+  ;
   // Enable transmit
   
   for (i = 0; i < 6; i++)
@@ -72,12 +72,12 @@ StatusErr_t RegWrite(uint8_t id, uint8_t regAddr, uint8_t byteCount, uint8_t *wB
 
 StatusErr_t Action()
 {
-  uint8_t check = ~(0xFE + 2 + (uint8_t) ACTION);
+  uint8_t check = ~(0xFE + 2 + (uint8_t)ACTION);
   uint8_t i;
-  uint8_t data[] =
-  { 0xFF, 0xFF, 0xFE, 2, (uint8_t) ACTION, check };
+  uint8_t data[] = {0xFF, 0xFF, 0xFE, 2, (uint8_t)ACTION, check};
   
   TRAEN
+  ;
   
   for (i = 0; i < 6; i++)
   {
@@ -103,16 +103,18 @@ StatusErr_t SyncWrite(uint8_t id)
 Err_t receiveStatus(uint8_t id, uint8_t *status, uint8_t *param, uint8_t *parcount)
 {
   uint16_t start = 0;
-  uint8_t i, crc8 = 0, recCrc = 0;
+  uint8_t i, checksum = 0, receiveChecksum = 0;
   
   /* Set PE2 to low & PE3 to high (enable receive) */
   RECEN
+  ;
   
   do
   {
     start = (start << 8);
-    start |= (uint16_t) USART_Receive(USART_SERVO);
-  } while (start != 0xFFFF);
+    start |= (uint16_t)USART_Receive(USART_SERVO);
+  }
+  while (start != 0xFFFF);
   
   if (id != USART_Receive(USART_SERVO))
     return INVALID_ID;
@@ -126,16 +128,16 @@ Err_t receiveStatus(uint8_t id, uint8_t *status, uint8_t *param, uint8_t *parcou
     for (i = 0; i < (*parcount) - 2; i++)
     {
       *(param + i) = USART_Receive(USART_SERVO);
-      crc8 += *(param + i);
+      checksum += *(param + i);
     }
   }
   
-  recCrc = USART_Receive(USART_SERVO);
+  receiveChecksum = USART_Receive(USART_SERVO);
   
-  crc8 += (id + *parcount + *status);
-  crc8 = ~crc8;
+  checksum += (id + *parcount + *status);
+  checksum = ~checksum;
   
-  if (crc8 != recCrc)
+  if (checksum != receiveChecksum)
     return CRC_ERR;
   
   if (*status == 0)
@@ -150,20 +152,20 @@ Err_t turnMotor(uint8_t id, uint16_t angle)
   Err_t err = ERROR;
   uint8_t errp, param, parcount;
   int8_t i;
-  uint8_t data[] =
-  { 0xFF, 0xFF, id, 5, WRITE_VALUE, GOALPOSITION_L, 0, 0, 0 };
+  uint8_t data[] = {0xFF, 0xFF, id, 5, WRITE_DATA, GOALPOSITION_L, 0, 0, 0};
   uint16_t checksum = 0;
   
   if (angle > MAX_ANGLE || angle < MIN_ANGLE)
     return INVALID_RANGE;
   
-  data[6] = (uint8_t) AngleLookupTable[angle];
+  data[6] = (uint8_t)AngleLookupTable[angle];
   data[7] = (uint8_t)(AngleLookupTable[angle] >> 8);
   for (i = 2; i < 9; i++)
     checksum += data[i];
-  data[8] = ~((uint8_t) checksum);
+  data[8] = ~((uint8_t)checksum);
   
   TRAEN
+  ;
   // Enable transmit
   
   for (i = 0; i < 9; i++)
@@ -195,8 +197,7 @@ Err_t spinMotor(uint8_t id, uint16_t sp, uint8_t dir)
   uint16_t dirmask = 0x400;
   uint16_t speed;
   Err_t err = ERROR;
-  uint8_t data[] =
-  { 0xFF, 0xFF, id, 5, WRITE_VALUE, 0 };
+  uint8_t data[] = {0xFF, 0xFF, id, 5, WRITE_DATA, 0};
   
   if (sp < MIN_SPEED || sp > MAX_SPEED)
     return INVALID_RANGE;
@@ -214,22 +215,20 @@ void SetYX(uint8_t y, uint8_t x)
   Err_t err;
   uint8_t errp, param, parcount;
   
-  th2 = (uint8_t)(
-      acos(
-          (pow(x, 2) + pow(y, 2) - pow(AXLE_LEN, 2) - pow(AXLE_LEN, 2))
-              / (2 * AXLE_LEN * AXLE_LEN)) * 180.0 / PI);
-  th1 = (uint8_t)(
-      asin(
-          (y * (AXLE_LEN - AXLE_LEN * cos(th2)) - x * AXLE_LEN * sin(th2))
-              / (pow(x, 2) + pow(y, 2))) * 180.0 / PI);
+  th2 = (uint8_t)(acos(
+      (pow(x, 2) + pow(y, 2) - pow(AXLE_LEN, 2) - pow(AXLE_LEN, 2)) / (2 * AXLE_LEN * AXLE_LEN)) * 180.0
+      / PI);
+  th1 = (uint8_t)(asin(
+      (y * (AXLE_LEN - AXLE_LEN * cos(th2)) - x * AXLE_LEN * sin(th2)) / (pow(x, 2) + pow(y, 2))) * 180.0
+      / PI);
   
-  msg[0] = (uint8_t) AngleLookupTable[th1];
+  msg[0] = (uint8_t)AngleLookupTable[th1];
   msg[1] = (uint8_t)(AngleLookupTable[th1] >> 8);
   RegWrite(servoTable[2], GOALPOSITION_L, 2, msg);
   while (!(UCSR0A & (1 << TXC0)))
     ;
   
-  msg[0] = (uint8_t) AngleLookupTable[th2];
+  msg[0] = (uint8_t)AngleLookupTable[th2];
   msg[1] = (uint8_t)(AngleLookupTable[th2] >> 8);
   RegWrite(servoTable[3], GOALPOSITION_L, 2, msg);
   while (!(UCSR0A & (1 << TXC0)))
@@ -240,11 +239,11 @@ void SetYX(uint8_t y, uint8_t x)
   //printf("TH0: %d; TH1: %d\n", th[0], th[1]);
   //turnMotor(servoTable[1], th[0]);
   //turnMotor(servoTable[2], th[1]);
-  msg[0] = (uint8_t) AngleLookupTable[th1];
+  msg[0] = (uint8_t)AngleLookupTable[th1];
   msg[1] = (uint8_t)(AngleLookupTable[th1] >> 8);
   RegWrite(servoTable[1], GOALPOSITION_L, 2, msg);
   
-  msg[0] = (uint8_t) AngleLookupTable[th2];
+  msg[0] = (uint8_t)AngleLookupTable[th2];
   msg[1] = (uint8_t)(AngleLookupTable[th2] >> 8);
   RegWrite(servoTable[2], GOALPOSITION_L, 2, msg);
   

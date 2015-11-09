@@ -17,7 +17,6 @@
 #define USART_MODBUS  0
 #define USART_SERVO   1
 
-
 Err_t USART_Transmit(uint8_t port, uint8_t data);
 void USART_Init(void);
 uint8_t USART_Receive(uint8_t port);

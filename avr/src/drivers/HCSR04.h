@@ -16,8 +16,8 @@
 #define TRIG (1<<PE6)
 #define US_TO_CM_SCALER  58
 
-ISR(TIMER1_CAPT_vect);
-ISR(TIMER1_OVF_vect);
+ISR (TIMER1_CAPT_vect);
+ISR (TIMER1_OVF_vect);
 uint16_t getDistance(void);
 uint16_t uStoCm(uint16_t us);
 uint16_t uStoMm(uint16_t us);
