@@ -114,7 +114,7 @@
     char *get_ip(char *host)
     {
       struct hostent *hent;
-      int iplen = 15; //XXX.XXX.XXX.XXX
+      int iplen = 18; //XXX.XXX.XXX.XXX
       char *ip = (char *)malloc(iplen+1);
       memset(ip, 0, iplen+1);
       if((hent = gethostbyname(host)) == NULL)
