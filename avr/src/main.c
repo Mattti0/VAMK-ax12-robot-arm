@@ -65,6 +65,7 @@
 
 int main(void)
 {
+
   /**
    * Here hould be done initializations
    */

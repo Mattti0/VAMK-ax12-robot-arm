@@ -28,113 +28,115 @@
 #include <avr/signal.h>
 
 #include "port.h"
-
+#include "USART_driver.h"
 /* ----------------------- Modbus includes ----------------------------------*/
 #include "mb.h"
 #include "mbport.h"
-
-#define UART_BAUD_RATE          9600
-#define UART_BAUD_CALC(UART_BAUD_RATE,F_OSC) \
-    ( ( F_OSC ) / ( ( UART_BAUD_RATE ) * 16UL ) - 1 )
-
-//#define UART_UCSRB  UCSR0B
+//
+//#define UART_BAUD_RATE          9600
+//#define UART_BAUD_CALC(UART_BAUD_RATE,F_OSC) \
+//    ( ( F_OSC ) / ( ( UART_BAUD_RATE ) * 16UL ) - 1 )
+//
+////#define UART_UCSRB  UCSR0B
 
 void
 vMBPortSerialEnable( BOOL xRxEnable, BOOL xTxEnable )
 {
-#ifdef RTS_ENABLE
-    UCSRB |= _BV( TXEN ) | _BV(TXCIE);
-#else
-    UCSRB |= _BV( TXEN );
-#endif
-
-    if( xRxEnable )
-    {
-        UCSRB |= _BV( RXEN ) | _BV( RXCIE );
-    }
-    else
-    {
-        UCSRB &= ~( _BV( RXEN ) | _BV( RXCIE ) );
-    }
-
-    if( xTxEnable )
-    {
-        UCSRB |= _BV( TXEN ) | _BV( UDRE );
-#ifdef RTS_ENABLE
-        RTS_HIGH;
-#endif
-    }
-    else
-    {
-        UCSRB &= ~( _BV( UDRE ) );
-    }
+//#ifdef RTS_ENABLE
+//    UCSRB |= _BV( TXEN ) | _BV(TXCIE);
+//#else
+//    UCSRB |= _BV( TXEN );
+//#endif
+//
+//    if( xRxEnable )
+//    {
+//        UCSRB |= _BV( RXEN ) | _BV( RXCIE );
+//    }
+//    else
+//    {
+//        UCSRB &= ~( _BV( RXEN ) | _BV( RXCIE ) );
+//    }
+//
+//    if( xTxEnable )
+//    {
+//        UCSRB |= _BV( TXEN ) | _BV( UDRE );
+//#ifdef RTS_ENABLE
+//        RTS_HIGH;
+//#endif
+//    }
+//    else
+//    {
+//        UCSRB &= ~( _BV( UDRE ) );
+//    }
 }
 
 BOOL
 xMBPortSerialInit( UCHAR ucPORT, ULONG ulBaudRate, UCHAR ucDataBits, eMBParity eParity )
 {
-    UCHAR ucUCSRC = 0;
-
-    /* prevent compiler warning. */
-    (void)ucPORT;
-	
-    UBRR = UART_BAUD_CALC( ulBaudRate, F_CPU );
-
-    switch ( eParity )
-    {
-        case MB_PAR_EVEN:
-            ucUCSRC |= _BV( UPM1 );
-            break;
-        case MB_PAR_ODD:
-            ucUCSRC |= _BV( UPM1 ) | _BV( UPM0 );
-            break;
-        case MB_PAR_NONE:
-            break;
-    }
-
-    switch ( ucDataBits )
-    {
-        case 8:
-            ucUCSRC |= _BV( UCSZ0 ) | _BV( UCSZ1 );
-            break;
-        case 7:
-            ucUCSRC |= _BV( UCSZ1 );
-            break;
-    }
-
-#if defined (__AVR_ATmega168__)
-    UCSRC |= ucUCSRC;
-#elif defined (__AVR_ATmega169__)
-    UCSRC |= ucUCSRC;
-#elif defined (__AVR_ATmega8__)
-    UCSRC = _BV( URSEL ) | ucUCSRC;
-#elif defined (__AVR_ATmega16__)
-    UCSRC = _BV( URSEL ) | ucUCSRC;
-#elif defined (__AVR_ATmega32__)
-    UCSRC = _BV( URSEL ) | ucUCSRC;
-#elif defined (__AVR_ATmega128__)
-    UCSRC |= ucUCSRC;
-#endif
-
-    vMBPortSerialEnable( FALSE, FALSE );
-
-#ifdef RTS_ENABLE
-    RTS_INIT;
-#endif
+//    UCHAR ucUCSRC = 0;
+//
+//
+//
+//    /* prevent compiler warning. */
+//    (void)ucPORT;
+//
+//    UBRR = UART_BAUD_CALC( ulBaudRate, F_CPU );
+//
+//    switch ( eParity )
+//    {
+//        case MB_PAR_EVEN:
+//            ucUCSRC |= _BV( UPM1 );
+//            break;
+//        case MB_PAR_ODD:
+//            ucUCSRC |= _BV( UPM1 ) | _BV( UPM0 );
+//            break;
+//        case MB_PAR_NONE:
+//            break;
+//    }
+//
+//    switch ( ucDataBits )
+//    {
+//        case 8:
+//            ucUCSRC |= _BV( UCSZ0 ) | _BV( UCSZ1 );
+//            break;
+//        case 7:
+//            ucUCSRC |= _BV( UCSZ1 );
+//            break;
+//    }
+//
+//#if defined (__AVR_ATmega168__)
+//    UCSRC |= ucUCSRC;
+//#elif defined (__AVR_ATmega169__)
+//    UCSRC |= ucUCSRC;
+//#elif defined (__AVR_ATmega8__)
+//    UCSRC = _BV( URSEL ) | ucUCSRC;
+//#elif defined (__AVR_ATmega16__)
+//    UCSRC = _BV( URSEL ) | ucUCSRC;
+//#elif defined (__AVR_ATmega32__)
+//    UCSRC = _BV( URSEL ) | ucUCSRC;
+//#elif defined (__AVR_ATmega128__)
+//    UCSRC |= ucUCSRC;
+//#endif
+//
+//    vMBPortSerialEnable( FALSE, FALSE );
+//
+//#ifdef RTS_ENABLE
+//    RTS_INIT;
+//#endif
     return TRUE;
 }
 
 BOOL
 xMBPortSerialPutByte( CHAR ucByte )
 {
-    UDR = ucByte;
+    USARTTransmit(USART_MODBUS, ucByte);
     return TRUE;
 }
 
 BOOL
 xMBPortSerialGetByte( CHAR * pucByte )
 {
-    *pucByte = UDR;
+    *pucByte = USARTRecevie(USART_MODBUS);
     return TRUE;
 }
 

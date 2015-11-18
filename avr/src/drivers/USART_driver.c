@@ -62,7 +62,7 @@
 /*********************************************************************
  ;  F U N C T I O N    D E S C R I P T I O N
  ;---------------------------------------------------------------------
- ; NAME:
+ ; @fn Err_t USARTTransmit(uint8_t port, uint8_t data)
  ; DESCRIPTION:
  ;  Input:
  ;  Output:
